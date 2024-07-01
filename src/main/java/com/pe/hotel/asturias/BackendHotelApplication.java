@@ -22,7 +22,7 @@ public class BackendHotelApplication {
                 @Override
                 public void addCorsMappings(CorsRegistry registry) {
                     registry.addMapping("/**")
-                            .allowedOrigins("https://hotel-asturias.vercel.app") // Agrega los dominios de tu frontend
+                            .allowedOrigins("https://hotel-asturias.vercel.app", "http://localhost:5173") // Agrega los dominios de tu frontend
                             .allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH")
                             .allowedHeaders("*")  // Permite todos los headers
                             .allowCredentials(true); // Permite el uso de credenciales (opcional)
