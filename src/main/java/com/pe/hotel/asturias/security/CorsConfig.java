@@ -30,7 +30,8 @@ public class CorsConfig {
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList(
                 "https://hotel-asturias.vercel.app",
-                "http://localhost:5174"));
+                "http://localhost:5173"
+        ));
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
