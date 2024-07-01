@@ -28,8 +28,9 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("https://hotel-asturias.vercel.app");
-        config.addAllowedOrigin("http://localhost:5174");
+        config.setAllowedOrigins(Arrays.asList(
+                "https://hotel-asturias.vercel.app",
+                "http://localhost:5174"));
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.AUTHORIZATION,
                 HttpHeaders.CONTENT_TYPE,
