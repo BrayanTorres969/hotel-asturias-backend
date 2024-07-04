@@ -39,7 +39,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody User user){
         try{
             userService.registerUser(user);
-            return ResponseEntity.ok("Registration successful!");
+            return ResponseEntity.ok("Usuario creado con éxito!");
 
         }catch (UserAlreadyExistsException e){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
