@@ -40,10 +40,11 @@ public class RoomController {
     public ResponseEntity<RoomResponse> addNewRoom(
             @RequestParam("photo") MultipartFile photo,
             @RequestParam("roomType") String roomType,
-            @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException {
-        Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice);
+            @RequestParam("roomPrice") BigDecimal roomPrice,
+            @RequestParam("roomDescription") String roomDescription) throws SQLException, IOException {
+        Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice,roomDescription);
         RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(),
-                savedRoom.getRoomPrice());
+                savedRoom.getRoomPrice(),savedRoom.getRoomDescription());
         return ResponseEntity.ok(response);
     }
 
@@ -79,11 +80,12 @@ public class RoomController {
     public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
                                                    @RequestParam(required = false)  String roomType,
                                                    @RequestParam(required = false) BigDecimal roomPrice,
+                                                   @RequestParam(required = false)  String roomDescription,
                                                    @RequestParam(required = false) MultipartFile photo) throws SQLException, IOException {
         byte[] photoBytes = photo != null && !photo.isEmpty() ?
                 photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
         //Blob photoBlob = photoBytes != null && photoBytes.length >0 ? new SerialBlob(photoBytes): null;
-        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
+        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice,roomDescription, photoBytes);
         RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);
     }
@@ -131,7 +133,7 @@ public class RoomController {
                         booking.getCheckInDate(),
                         booking.getCheckOutDate(), booking.getBookingConfirmationCode())).toList();
         return new RoomResponse(room.getId(),
-                room.getRoomType(), room.getRoomPrice(),
+                room.getRoomType(), room.getRoomPrice(),room.getRoomDescription(),
                 room.isBooked(), room.getPhoto(), bookingInfo);
     }
 
