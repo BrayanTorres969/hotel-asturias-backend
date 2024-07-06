@@ -26,7 +26,7 @@ public class RoomResponse {
         this.id = id;
         this.roomType = roomType;
         this.roomPrice = roomPrice;
-        this.roomDescription=roomDescription;
+        this.roomDescription = roomDescription;
     }
 
     public RoomResponse(Long id, String roomType, BigDecimal roomPrice,String roomDescription, boolean isBooked,

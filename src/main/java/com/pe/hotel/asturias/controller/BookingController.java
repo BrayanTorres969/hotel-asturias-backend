@@ -85,7 +85,8 @@ public class BookingController {
         RoomResponse room = new RoomResponse(
                 theRoom.getId(),
                 theRoom.getRoomType(),
-                theRoom.getRoomPrice());
+                theRoom.getRoomPrice(),
+                theRoom.getRoomDescription());
         return new BookingResponse(
                 booking.getBookingId(), booking.getCheckInDate(),
                 booking.getCheckOutDate(),booking.getGuestFullName(),

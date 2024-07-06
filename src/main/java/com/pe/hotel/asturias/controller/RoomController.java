@@ -43,8 +43,8 @@ public class RoomController {
             @RequestParam("roomPrice") BigDecimal roomPrice,
             @RequestParam("roomDescription") String roomDescription) throws SQLException, IOException {
         Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice,roomDescription);
-        RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(),
-                savedRoom.getRoomPrice(),savedRoom.getRoomDescription());
+        RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(), savedRoom.getRoomPrice(),savedRoom.getRoomDescription());
+
         return ResponseEntity.ok(response);
     }
 
@@ -82,8 +82,7 @@ public class RoomController {
                                                    @RequestParam(required = false) BigDecimal roomPrice,
                                                    @RequestParam(required = false)  String roomDescription,
                                                    @RequestParam(required = false) MultipartFile photo) throws SQLException, IOException {
-        byte[] photoBytes = photo != null && !photo.isEmpty() ?
-                photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
+        byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
         //Blob photoBlob = photoBytes != null && photoBytes.length >0 ? new SerialBlob(photoBytes): null;
         Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice,roomDescription, photoBytes);
         RoomResponse roomResponse = getRoomResponse(theRoom);
