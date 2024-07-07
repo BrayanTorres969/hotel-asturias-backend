@@ -7,7 +7,10 @@ import com.pe.hotel.asturias.response.BookingResponse;
 import com.pe.hotel.asturias.response.RoomResponse;
 import com.pe.hotel.asturias.service.BookingService;
 import com.pe.hotel.asturias.service.IRoomService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -139,6 +142,51 @@ public class RoomController {
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {
         return bookingService.getAllBookingsByRoomId(roomId);
 
+    }
+
+    @GetMapping("/export/excel")
+    public void exportRoomsToExcel(HttpServletResponse response) throws IOException, SQLException {
+        response.setContentType("application/octet-stream");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=rooms.xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        List<Room> rooms = roomService.getAllRooms();
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Rooms");
+
+        // Header row
+        Row headerRow = sheet.createRow(0);
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        String[] columns = {"ID Habitación", "Tipo de habitación", "Precio", "Descripción", "Estado"};
+        for (int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
+        }
+
+        // Data rows
+        int rowNum = 1;
+        for (Room room : rooms) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(room.getId());
+            row.createCell(1).setCellValue(room.getRoomType());
+            row.createCell(2).setCellValue(room.getRoomPrice().doubleValue());
+            row.createCell(3).setCellValue(room.getRoomDescription());
+            row.createCell(4).setCellValue(room.isBooked());
+        }
+
+        // Autosize columns
+        for (int i = 0; i < columns.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        workbook.write(response.getOutputStream());
+        workbook.close();
     }
 
 }
