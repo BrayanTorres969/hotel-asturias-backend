@@ -44,7 +44,7 @@ public class BookingService implements IBookingService {
     @Override
     public String saveBooking(Long roomId, BookedRoom bookingRequest) {
         if (bookingRequest.getCheckOutDate().isBefore(bookingRequest.getCheckInDate())){
-            throw new InvalidBookingRequestException("Check-in date must come before check-out date");
+            throw new InvalidBookingRequestException("La fecha de Check-in debe ser anterior a la fecha de check-out");
         }
         Room room = roomService.getRoomById(roomId).get();
         List<BookedRoom> existingBookings = room.getBookings();
@@ -53,7 +53,7 @@ public class BookingService implements IBookingService {
             room.addBooking(bookingRequest);
             bookingRepository.save(bookingRequest);
         }else{
-            throw  new InvalidBookingRequestException("Sorry, This room is not available for the selected dates;");
+            throw  new InvalidBookingRequestException("Lo siento, Está habitación no esta disponible para las fechas seleccionadas.");
         }
         return bookingRequest.getBookingConfirmationCode();
     }
@@ -61,7 +61,7 @@ public class BookingService implements IBookingService {
     @Override
     public BookedRoom findByBookingConfirmationCode(String confirmationCode) {
         return bookingRepository.findByBookingConfirmationCode(confirmationCode)
-                .orElseThrow(() -> new ResourceNotFoundException("No booking found with booking code :"+confirmationCode));
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró reserva con el código de confirmación :"+confirmationCode));
 
     }
 
