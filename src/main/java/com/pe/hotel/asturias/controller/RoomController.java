@@ -10,6 +10,8 @@ import com.pe.hotel.asturias.service.IRoomService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -159,8 +161,17 @@ public class RoomController {
         // Header row
         Row headerRow = sheet.createRow(0);
         CellStyle headerCellStyle = workbook.createCellStyle();
-        headerCellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        //headerCellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        //headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        byte[] rgb = new byte[] {(byte) 0x94, (byte) 0x8B, (byte) 0x90};
+        XSSFColor customColor = new XSSFColor(rgb, null);
+        ((XSSFCellStyle) headerCellStyle).setFillForegroundColor(customColor);
         headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+        Font font = workbook.createFont();
+        font.setColor(IndexedColors.WHITE.getIndex());
+        headerCellStyle.setFont(font);
 
         String[] columns = {"ID Habitación", "Tipo de habitación", "Precio", "Descripción", "Estado"};
         for (int i = 0; i < columns.length; i++) {
@@ -177,7 +188,7 @@ public class RoomController {
             row.createCell(1).setCellValue(room.getRoomType());
             row.createCell(2).setCellValue(room.getRoomPrice().doubleValue());
             row.createCell(3).setCellValue(room.getRoomDescription());
-            row.createCell(4).setCellValue(room.isBooked());
+            row.createCell(4).setCellValue(room.isBooked()? "Reservado" : "No reservado");
         }
 
         // Autosize columns
