@@ -161,13 +161,9 @@ public class RoomController {
         // Header row
         Row headerRow = sheet.createRow(0);
         CellStyle headerCellStyle = workbook.createCellStyle();
-        //headerCellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-        //headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-        byte[] rgb = new byte[] {(byte) 0x94, (byte) 0x8B, (byte) 0x90};
-        XSSFColor customColor = new XSSFColor(rgb, null);
-        ((XSSFCellStyle) headerCellStyle).setFillForegroundColor(customColor);
+        headerCellStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
         headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
 
         Font font = workbook.createFont();
         font.setColor(IndexedColors.WHITE.getIndex());
